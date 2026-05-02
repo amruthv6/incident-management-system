@@ -17,16 +17,24 @@ if (Number.isNaN(port) || port <= 0) {
 }
 
 async function start() {
-  await connectMongoDB();
-
+  // Start listening first so health checks pass
   app.listen(port, (err) => {
     if (err) {
       logger.error({ err }, "Error listening on port");
       process.exit(1);
     }
-
     logger.info({ port }, "Server listening");
   });
+
+  // Connect to MongoDB (non-blocking — routes return 503 until connected)
+  try {
+    await connectMongoDB();
+  } catch (err) {
+    logger.error(
+      { err },
+      "MongoDB connection failed. Provide MONGODB_URI and restart the server."
+    );
+  }
 }
 
 start().catch((err) => {

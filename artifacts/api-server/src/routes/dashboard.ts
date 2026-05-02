@@ -1,9 +1,12 @@
 import { Router } from "express";
+import { requireMongo } from "../middlewares/requireMongo";
 import { Incident } from "../models/incident";
 import { Employee } from "../models/employee";
 import { GetRecentIncidentsQueryParams } from "@workspace/api-zod";
 
 const router = Router();
+
+router.use(requireMongo);
 
 router.get("/stats", async (_req, res) => {
   const [

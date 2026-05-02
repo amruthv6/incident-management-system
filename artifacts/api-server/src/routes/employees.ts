@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { requireMongo } from "../middlewares/requireMongo";
 import { Employee } from "../models/employee";
 import {
   ListEmployeesQueryParams,
@@ -10,6 +11,8 @@ import {
 } from "@workspace/api-zod";
 
 const router = Router();
+
+router.use(requireMongo);
 
 router.get("/", async (req, res) => {
   const query = ListEmployeesQueryParams.parse(req.query);

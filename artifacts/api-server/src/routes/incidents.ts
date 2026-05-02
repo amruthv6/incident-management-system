@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { requireMongo } from "../middlewares/requireMongo";
 import mongoose from "mongoose";
 import { Incident } from "../models/incident";
 import { Employee } from "../models/employee";
@@ -17,6 +18,8 @@ import {
 } from "@workspace/api-zod";
 
 const router = Router();
+
+router.use(requireMongo);
 
 function mapIncident(i: InstanceType<typeof Incident>) {
   return {
